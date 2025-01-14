@@ -11,8 +11,8 @@
 					<el-color-picker @click.stop="itemHideStatus = true" :focus="itemHideStatus = false"
 						v-model="textColor"></el-color-picker>
 				</div>
-				<span @click="changeTextColor" class="color-item" v-for="(item,key) in textColorList"
-					:value=item :style="'background-color:'+item+';'"></span>
+				<span @click="changeTextColor" class="color-item" v-for="(item,key) in textColorList" :value=item
+					:style="'background-color:'+item+';'"></span>
 			</div>
 		</div>
 	</div>
@@ -36,9 +36,9 @@
 					<span class="title-count">{{ titleLength }} / 100</span>
 				</div>
 				<div class="editor-main">
-					<div ref="inputDiv" contenteditable="true" id="input-main" @focus="inputFocus" @blur="inputBlur"
-						@keydown="inputEditor" @compositionstart="inputChineseStart" @compositionend.stop="inputChinese">
-						<span contenteditable="true" ref="df">在此开始编辑你的文章吧</span>
+					<div ref="inputDiv" contenteditable="true" id="input-main" class="placeholder" @focus="inputFocus" @blur="inputBlur"
+						@keydown="inputEditor" @compositionstart="inputChineseStart" data-placeholder="在此开始编辑你的文章吧"
+						@compositionend.stop="inputChinese">
 					</div>
 				</div>
 			</div>
@@ -48,7 +48,10 @@
 		</el-col>
 	</el-row>
 	<div class="editor-bottom">
-		底部
+		<div class="editor-bottom-main">
+			<el-button round>保存草稿</el-button>
+			<el-button type="primary" round @click="publishBtn()">发布博客</el-button>
+		</div>
 	</div>
 </template>
 
@@ -65,6 +68,9 @@
 	} from "@/js/http.js"
 	import EditorMenu from '@/components/EditorMenu'
 	import editor from "@/js/editor.js"
+	import {
+		ElMessage
+	} from 'element-plus'
 
 	export default {
 		data() {
@@ -128,6 +134,16 @@
 				this.textColor = e.target.getAttribute("value")
 				this.hideItemCard()
 			},
+			// 发布博客
+			publishBtn() {
+				if (this.title.length < 5) {
+					ElMessage.error('文章标题应为5~100个字')
+					return
+				}
+				if (this.$refs.inputDiv.innerText.trim().length == 0) {
+					ElMessage.error('文章内容不能为空')
+				}
+			},
 		},
 		mounted() {
 			window.addEventListener("click", (e) => {
@@ -135,19 +151,23 @@
 				if (this.itemHideStatus) {
 					return
 				}
-
 				this.hideItemCard()
 			})
 		},
-		watch:{
-			textColor(newVal,OldVal) {
-				editor.setTextColor(newVal,this.$refs.inputDiv)
+		watch: {
+			textColor(newVal, OldVal) {
+				editor.setTextColor(newVal, this.$refs.inputDiv)
 			}
 		}
 	};
 </script>
 
 <style>
+	.editor-bottom-main {
+		text-align: center;
+		margin-top: 1.5%;
+	}
+
 	#articles {
 		margin: 0% 15%;
 		padding: 16px;
@@ -177,6 +197,12 @@
 		min-width: 100%;
 		min-height: 300px;
 		outline: none;
+	}
+	.placeholder::before {
+	    content: attr(data-placeholder);
+	    color: #aaa;
+	    position: absolute;
+	    pointer-events: none; /* Allow clicks to pass through */
 	}
 
 	#input-main p {
@@ -244,7 +270,7 @@
 		margin-left: 3px;
 		display: inline-flex;
 	}
-	
+
 	.editor-bottom {
 		position: fixed;
 		bottom: 0;

@@ -62,13 +62,15 @@ class Editor {
 	// 鼠标焦点
 	inputFocus(dom, defaultFont) {
 		if (dom.children[0] == defaultFont) {
-			dom.removeChild(defaultFont)
+			dom.setAttribute("data-placeholder","")
+			dom.classList.remove("placeholder")
 		}
 	}
 	// 失去焦点
 	inputBlur(dom, defaultFont) {
 		if (dom.children.length == 0) {
-			dom.appendChild(defaultFont)
+			dom.setAttribute("data-placeholder","在此开始编辑你的文章吧")
+			dom.classList.add("placeholder")
 		}
 	}
 	// 文章编辑
@@ -87,7 +89,6 @@ class Editor {
 			e.preventDefault();
 			// 添加文本
 			let p = addP(e.key)
-			p.appendChild(span)
 			dom.appendChild(p)
 			setRange(p)
 			return
