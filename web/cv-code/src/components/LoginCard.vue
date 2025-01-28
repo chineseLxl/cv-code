@@ -12,7 +12,9 @@
 							<template #header>
 								<div class="card-header login-header">
 									<span>欢迎使用</span>
-									<el-icon @click="hidePopup()"><Close /></el-icon>
+									<el-icon @click="hidePopup()">
+										<Close />
+									</el-icon>
 								</div>
 							</template>
 							<el-form :model="ruleForm" :rules="rules" ref="ruleForm">
@@ -40,12 +42,15 @@
 
 <script>
 	import {
-		ref,toRaw
+		ref,
+		toRaw
 	} from 'vue'
 	import {
 		router
 	} from '@/js/router.js'
-	import { http } from "@/js/http.js"
+	import {
+		http
+	} from "@/js/http.js"
 	export default {
 		props: {
 			status: {
@@ -92,9 +97,7 @@
 							username: formData.username,
 							password: formData.password,
 						}).then(res => {
-							console.log(res.data)
-							if(res.data.code == 200) {
-								localStorage.setItem("username", formData.username);
+							if (res.data.code == 200) {
 								localStorage.setItem("token", res.data.data.token);
 								this.$emit("update:status", false)
 								location.reload()
@@ -136,12 +139,11 @@
 		top: 30%;
 		left: 42%;
 		text-align: center;
-
-			max-width: 350px;
-			min-width: 350px;
-
+		max-width: 350px;
+		min-width: 350px;
 		z-index: 0;
 	}
+
 	.login-header {
 		i {
 			float: right;

@@ -24,11 +24,9 @@
 		components: {
 			PrismEditor
 		},
-		data: () => ({
-			code: 'console.log("Hello World")',
-			lineNumbers: true, // true 显示行号   false 不显示行号
-			readonlyType: false //true不可编辑   false 可编辑
-		}),
+		data: () => {
+			
+		},
 		methods: {
 			highlighter(code) {
 				return highlight(code, languages.js); //returns html

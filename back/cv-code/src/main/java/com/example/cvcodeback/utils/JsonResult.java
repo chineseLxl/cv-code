@@ -42,7 +42,7 @@ public class JsonResult<T> {
     public JsonResult(T data) {
         this.data = data;
         this.code = "200";
-        this.msg = msg;
+        this.msg = "操作成功";
     }
 
     /**

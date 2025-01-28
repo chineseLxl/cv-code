@@ -56,6 +56,7 @@
 	} from '@/js/router.js'
 	import search from "@/components/Search.vue"
 	import LoginCard from "@/components/LoginCard.vue"
+	import { http } from "@/js/http.js"
 	export default {
 		props: {
 			menuForm: {
@@ -81,15 +82,22 @@
 				console.log(key, keyPath)
 			},
 			toIndex() {
-				router.replace("/")
+				// router.replace("/")
+				location.assign("/")
 			},
 			exitLogin() {
 				localStorage.clear()
 				location.reload()
 			},
 			isLogin() {
-				if (localStorage.getItem("username") != null) {
-					this.username = localStorage.getItem("username")
+				if (localStorage.getItem("token") != null) {
+					http.get("/api/api/getNickName",{
+						
+					}).then(res => {
+						this.username = res.data.data.nickname
+					}).catch(e => {
+						console.log(e);
+					})
 					this.loginStatus = true;
 				} else {
 					this.loginStatus = false;

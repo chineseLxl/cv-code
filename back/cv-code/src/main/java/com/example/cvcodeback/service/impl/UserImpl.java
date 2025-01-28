@@ -8,6 +8,8 @@ import com.example.cvcodeback.utils.PasswordMd5;
 import com.example.cvcodeback.utils.TokenUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class UserImpl implements UserService {
     final UserMapper userMapper;
@@ -23,7 +25,7 @@ public class UserImpl implements UserService {
     @Override
     public String resToken(User user) {
         User loginUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", user.getUsername()));
-        return tokenUtil.getToken(Integer.toString(loginUser.getId()),loginUser.getUsername());
+        return tokenUtil.getToken(Integer.toString(loginUser.getId()),loginUser.getUsername(),loginUser.getNickname());
     }
 
     @Override
@@ -33,6 +35,13 @@ public class UserImpl implements UserService {
             return loginUser.getPassword().equals(passwordMd5.encode(user.getPassword()));
         }
         return false;
+    }
+
+    @Override
+    public User getUserInfo(String token) {
+        Map<String,String> tokenMap = tokenUtil.parseToken(token);
+        Integer uid = Integer.parseInt(tokenMap.get("userId"));
+        return userMapper.selectOne(new QueryWrapper<User>().eq("id", uid));
     }
 
     @Override

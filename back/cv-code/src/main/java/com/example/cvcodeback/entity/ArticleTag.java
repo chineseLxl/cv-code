@@ -7,20 +7,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("user")
-public class User {
+@TableName("article_tag")
+public class ArticleTag {
     @TableId(type = IdType.AUTO)
     private Integer id;
     @TableField
-    private String nickname;
+    private String name;
     @TableField
-    private String username;
-    @TableField
-    private String password;
-    @TableField
-    private String email;
-    @TableField
-    private String phone;
-    @TableField
-    private String type;
+    private Integer menuId;
 }

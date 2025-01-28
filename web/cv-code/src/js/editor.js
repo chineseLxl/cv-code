@@ -33,8 +33,7 @@ function addP(str) {
 	let p = document.createElement("p");
 	p.setAttribute("contenteditable", true)
 	// p.setAttribute("tabindex", "-1")
-	console.log(str)
-	p.innerText = str
+	p.innerHTML = str || "&nbsp"
 	return p
 }
 
@@ -47,7 +46,7 @@ function addSpan(str) {
 	return span
 }
 
-function inputColorText(str) {
+function inputColorText(dom,str) {
 	let span = document.createElement("span");
 	span.setAttribute("contenteditable", true)
 	// span.setAttribute("tabindex", "-1")
@@ -56,6 +55,8 @@ function inputColorText(str) {
 	// span.style.minHeight = "10px"
 	// span.textContent = str || " "
 	span.innerHTML = "&nbsp"
+	dom.setAttribute("data-placeholder","")
+	dom.classList.remove("placeholder")
 	return span
 }
 class Editor {
@@ -72,6 +73,12 @@ class Editor {
 			dom.setAttribute("data-placeholder","在此开始编辑你的文章吧")
 			dom.classList.add("placeholder")
 		}
+	}
+	// 添加p标签并定位至p标签
+	insP(dom,str) {
+		let p = addP(str)
+		dom.appendChild(p)
+		setRange(p)
 	}
 	// 文章编辑
 	inputEditor(e, dom) {
@@ -134,13 +141,13 @@ class Editor {
 		if (domList.length == 0) {
 			// 添加文本
 			let p = addP("")
-			let span = inputColorText("")
+			let span = inputColorText(dom,"")
 			p.appendChild(span)
 			dom.appendChild(p)
 			setRange(span)
 			return
 		} else {
-			let span = inputColorText("")
+			let span = inputColorText(dom,"")
 			domList[domList.length - 1].appendChild(span)
 			setRange(span)
 		}

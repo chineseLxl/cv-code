@@ -3,10 +3,13 @@ package com.example.cvcodeback.controller;
 import com.example.cvcodeback.entity.User;
 import com.example.cvcodeback.service.UserService;
 import com.example.cvcodeback.utils.JsonResult;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -43,5 +46,14 @@ public class userController {
         } else {
             return new JsonResult<>("注册失败","-1");
         }
+    }
+
+    // 获取用户信息 （解析token）
+    @RequestMapping("/getNickName")
+    public JsonResult getUserInfo(HttpServletRequest request) {
+        System.out.println(request.getHeader("token"));
+        Map<String,String> jsonMap = new HashMap<>();
+        jsonMap.put("nickname", userService.getUserInfo(request.getHeader("token")).getNickname());
+        return new JsonResult<>(jsonMap);
     }
 }

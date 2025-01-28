@@ -6,21 +6,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-@TableName("user")
-public class User {
+@TableName("article_menu")
+public class ArticleMenu {
     @TableId(type = IdType.AUTO)
     private Integer id;
     @TableField
-    private String nickname;
-    @TableField
-    private String username;
-    @TableField
-    private String password;
-    @TableField
-    private String email;
-    @TableField
-    private String phone;
-    @TableField
-    private String type;
+    private String name;
+    @TableField(exist = false)
+    private List<ArticleTag> tags;
 }

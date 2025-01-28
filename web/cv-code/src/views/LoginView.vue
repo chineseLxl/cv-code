@@ -63,11 +63,9 @@
 							username: formData.username,
 							password: formData.password,
 						}).then(res => {
-							console.log(res.data)
 							if(res.data.code == 200) {
-								localStorage.setItem("username", formData.username);
 								localStorage.setItem("token", res.data.data.token);
-								router.replace("/")
+								location.assign("/")
 							}
 						}).catch(e => {
 							console.log(e)

@@ -33,6 +33,7 @@
 	} from '@/js/router.js'
 	import search from "@/components/Search.vue"
 	import LoginCard from "@/components/LoginCard.vue"
+	import { http } from "@/js/http.js"
 	export default {
 		props: {
 			menuForm: {
@@ -59,11 +60,17 @@
 			},
 			exitLogin() {
 				localStorage.clear()
-				location.reload()
+				location.replace("/login")
 			},
 			isLogin() {
 				if (localStorage.getItem("token") != null) {
-					this.username = localStorage.getItem("username")
+					http.get("/api/api/getNickName",{
+						
+					}).then(res => {
+						this.username = res.data.data.nickname
+					}).catch(e => {
+						console.log(e);
+					})
 				} else {
 					location.replace("/login")
 				}
@@ -134,6 +141,5 @@
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		
 	}
 </style>
